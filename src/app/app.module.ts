@@ -1,4 +1,7 @@
-import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +20,19 @@ import { InputComponent } from './dashboard/new-transaction/input/input.componen
 import { HeaderHomeComponent } from './home/header-home/header-home.component';
 import { FooterComponent } from './home/footer/footer.component';
 import { ContentComponent } from './home/content/content.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
+
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+
+
 
 @NgModule({
   declarations: [
@@ -33,16 +49,30 @@ import { ContentComponent } from './home/content/content.component';
     InputComponent,
     HeaderHomeComponent,
     FooterComponent,
-    ContentComponent
+    ContentComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSlideToggleModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatIconModule,
+    MatGridListModule,
+    MatDividerModule,
+    FlexLayoutModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,  
+    MatSelectModule,
+    MatButtonModule,  
   ],
   providers: [
     provideClientHydration(),
     provideAnimationsAsync()
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
