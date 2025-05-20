@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -53,6 +54,7 @@ import { MatSelectModule } from '@angular/material/select';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     MatSlideToggleModule,
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -68,7 +70,8 @@ import { MatSelectModule } from '@angular/material/select';
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
