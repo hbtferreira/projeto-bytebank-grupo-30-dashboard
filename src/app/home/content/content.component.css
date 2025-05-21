@@ -1,8 +1,8 @@
 
-    body {
+    .content-body {
       margin: 0;
       font-family: 'Roboto', Arial, sans-serif;
-      min-height: 100vh;
+      min-height: 80vh;
       background: linear-gradient(to bottom, #25636e 0%, #fff 100%);
       display: flex;
       flex-direction: column;
@@ -10,13 +10,15 @@
     
    .hero-section {
       display: flex;
-      flex: 1;
+      align-items: center;      /* Centraliza verticalmente */
+      justify-content: center;  /* Centraliza horizontalmente */
       align-items: center;
       justify-content: center;
       gap: 2rem;
-      padding: 3rem 2rem;
-      flex-wrap: wrap;
-      position: relative;
+      padding: 1rem 25rem;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      min-height: 31.8vh; 
     }
     .hero-text {
       flex: 1;
@@ -26,7 +28,6 @@
       align-items: flex-start;
       min-width: 280px;
       max-width: 400px;
-      margin-left: 23vw;
     }
     .hero-text h1 {
       font-size: 1.5rem;
@@ -40,9 +41,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 320px;
+      min-width: 200px;
       min-height: 200px;
-       margin-right: 16vw;
     }
     .chart-container {
       position: relative;
