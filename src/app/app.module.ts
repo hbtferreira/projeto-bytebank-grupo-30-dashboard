@@ -33,6 +33,7 @@ import { HomeComponent } from './home/home.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
 
 
 
@@ -69,7 +70,8 @@ import { MatSelectModule } from '@angular/material/select';
     FormsModule,  
     MatSelectModule,
     MatButtonModule,  
-    RouterModule
+    RouterModule,
+    MatListModule
   ],
   providers: [
     provideClientHydration(),
