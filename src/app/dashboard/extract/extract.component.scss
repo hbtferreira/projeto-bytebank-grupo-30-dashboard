@@ -1,0 +1,93 @@
+@import "../../../styles/tokens";
+
+.extract-card {
+  background: $color-text-on-primary;
+  box-shadow: $shadow-medium;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  font-size: $font-heading-md-size;
+
+  width: 100%;
+  min-width: 344px;
+  min-height: 250px;
+  height: auto;
+
+  margin: $spacing-md auto 0;
+  position: relative;
+
+  .extract-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      cursor: pointer;
+      padding: $spacing-xs $spacing-xs;
+      color: $color-text-secondary;
+      background-color: $primary-900;
+      color: $color-text-on-primary;
+      border-radius: 32px;
+      align-items: center;
+      justify-items: center;
+      vertical-align: middle;
+    }
+  }
+
+  .extract-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 12px 0;
+
+    .item-left {
+      .month {
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 2px;
+        color: #388e3c;
+      }
+
+      .type {
+        margin: 0;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .value {
+        margin: 2px 0;
+        font-weight: bold;
+        font-size: 15px;
+      }
+
+      .deposit {
+        color: #388e3c;
+      }
+
+      .withdraw {
+        color: #d32f2f;
+      }
+
+      .divider-line {
+        margin-top: 4px;
+        background-color: #c8e6c9;
+      }
+    }
+
+    .item-right {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #999;
+    }
+  }
+}

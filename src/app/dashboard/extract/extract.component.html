@@ -1,0 +1,30 @@
+<mat-card class="responsive-box extract-card">
+  <div class="extract-header">
+    <h2>Extrato</h2>
+    <div class="actions">
+      <button mat-icon-button aria-label="Editar">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Excluir">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div *ngFor="let item of extrato" class="extract-item">
+    <div class="item-left">
+      <p class="month">Novembro</p>
+      <p class="type">{{ item.type }}</p>
+      <p
+        class="value"
+        [ngClass]="{ deposit: item.value > 0, withdraw: item.value < 0 }"
+      >
+        R$ {{ item.value }}
+      </p>
+      <mat-divider class="divider-line"></mat-divider>
+    </div>
+    <div class="item-right">
+      <p class="date">{{ item.date | date : "dd/MM/yyyy" }}</p>
+    </div>
+  </div>
+</mat-card>
