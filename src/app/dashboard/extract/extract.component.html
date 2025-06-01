@@ -14,13 +14,13 @@
 
   <div *ngFor="let item of extrato" class="extract-item">
     <div class="item-left">
-      <p class="month">Novembro</p>
+      <p class="month">{{ item.date | date : "MMMM" | titlecase }}</p>
       <p class="type">{{ item.type }}</p>
       <p
         class="value"
         [ngClass]="{ deposit: item.value > 0, withdraw: item.value < 0 }"
       >
-        R$ {{ item.value }}
+        R$ {{ item.value | number: '1.2-2' }}
       </p>
       <mat-divider class="divider-line"></mat-divider>
     </div>

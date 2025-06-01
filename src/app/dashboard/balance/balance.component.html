@@ -15,7 +15,7 @@
       </div>
       <hr class="balance-card__divider" />
       <p class="balance-card__account-type">Conta corrente:</p>
-      <p class="balance-card__amount">{{ !saldoVisivel ? 'R$ ******' : saldo | currency: 'BRL' }}</p>
+      <p class="balance-card__amount">R$ {{ !saldoVisivel ? '******' : (saldo | number: '1.2-2') }}</p>
     </div>
   </div>
 </mat-card>
