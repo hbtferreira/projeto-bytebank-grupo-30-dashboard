@@ -22,7 +22,6 @@ export class TransactionService extends BaseService<Transaction> {
    * @returns Observable<Transaction[]> que emite todas as transações
    */
   getByAccount() {
-    console.log('Fetching transactions for the account');
     return this.findAll();
   }
 
