@@ -2,7 +2,11 @@
 
 Este projeto é parte da formação em Engenharia Front-End da FIAP + Alura, utilizando Angular 17 com Angular Material, CDK e renderização SSR. O objetivo da aplicação é simular operações bancárias em um ambiente educativo, explorando boas práticas de desenvolvimento front-end moderno.
 
----
+## Repo:
+
+[Github | Repositorio](https://github.com/brubribeiro/projeto-bytebank-grupo-30)
+
+[Repositorio | release/1.0.0](https://github.com/brubribeiro/projeto-bytebank-grupo-30/tree/release/1.0.0)
 
 ## 🧰 Tecnologias Utilizadas
 
