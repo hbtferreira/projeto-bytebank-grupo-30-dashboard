@@ -1,0 +1,110 @@
+@import "../../../styles/tokens";
+
+.services-container {
+  background: $neutral-300;
+  padding: $spacing-lg;
+  border-radius: $border-radius-lg;
+  width: 100%;
+  max-width: 700px;
+  min-height: 400px;
+  position: relative;
+  margin: $spacing-md auto 0;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 200px; // ajuste o tamanho conforme necessário
+    height: 200px;
+    background: url('/assets/icons/pixels-upper.svg') no-repeat center center;
+    background-size: contain;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 200px; // ajuste o tamanho conforme necessário
+    height: 200px;
+    background: url('/assets/icons/pixels-lower.svg') no-repeat center center;
+    background-size: contain;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &__decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: url("/assets/pixels-grey.svg") no-repeat;
+    background-size: contain;
+    z-index: 0;
+    pointer-events: none;
+
+    &--left {
+      bottom: 0;
+      left: 0;
+      border-top-left-radius: $border-radius-lg;
+    }
+    &--right {
+      top: 0;
+      right: 0;
+      border-top-right-radius: $border-radius-lg;
+      transform: scaleX(-1);
+    }
+  }
+}
+
+.services-title {
+  font-size: $font-heading-sm-size;
+  font-weight: $font-heading-sm-weight;
+  color: $primary-900;
+  margin-bottom: $spacing-lg;
+  font-family: $font-family-base;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  z-index: 1;
+  position: relative;
+}
+
+.service-card {
+  background: #F2F2F2;
+  border-radius: 12px;
+  padding: 32px 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 5px 8px #0001;
+  transition: box-shadow 0.2s, transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.service-card:active {
+  transform: rotateY(360deg);
+}
+
+.service-card:hover {
+  box-shadow: 0 4px 16px #0002;
+}
+
+.service-icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  filter: invert(41%) sepia(94%) saturate(437%) hue-rotate(74deg) brightness(91%) contrast(91%);
+}
+
+.service-card span {
+  font-size: font-heading-xs-size;
+  color: $neutral-950;
+  font-weight: 500;
+}

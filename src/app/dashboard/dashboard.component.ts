@@ -8,6 +8,7 @@ import { AccountService } from '../services/account.service';
 })
 export class DashboardComponent implements OnInit {
   customerName = '';
+  selectedMenu = 'Início';
 
   constructor(private accountService: AccountService) {}
 
@@ -21,5 +22,9 @@ export class DashboardComponent implements OnInit {
     });
 
     this.accountService.loadAccount().subscribe();
+  }
+
+  onMenuSelected(label: string) {
+    this.selectedMenu = label;
   }
 }

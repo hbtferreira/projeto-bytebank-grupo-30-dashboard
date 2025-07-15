@@ -37,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import localePT from '@angular/common/locales/pt';
+import { OtherServicesComponent } from './dashboard/other-services/other-services.component';
 registerLocaleData(localePT);
 
 
@@ -57,6 +58,7 @@ registerLocaleData(localePT);
     HeaderHomeComponent,
     FooterComponent,
     ContentComponent,
+    OtherServicesComponent,
   ],
   imports: [
     BrowserModule,
