@@ -1,9 +1,10 @@
 <app-header-dashboard [nome]="customerName" />
 <div class="dashboard">
-  <app-menu />
+  <app-menu (menuSelected)="onMenuSelected($event)"/>
   <div>
     <app-balance [nome]="customerName" />
-    <app-new-transaction />
+    <app-new-transaction *ngIf="selectedMenu === 'Início'"/>
+    <app-other-services *ngIf="selectedMenu === 'Outros Serviços'"/>
   </div>
   <app-extract />
 </div>

@@ -5,6 +5,7 @@
         <a
           [href]="item.route"
           [class.active]="item.active"
+          (click)="selectMenu(item); $event.preventDefault()"
         >
           <span>{{ item.label }}</span>
           <hr/>
