@@ -1,0 +1,8 @@
+[
+  { "tipo": "Renda Fixa", "valor": 36000 },
+  { "tipo": "Renda Variável", "valor": 14000 },
+  { "tipo": "Fundos de investimento", "valor": 18000 },
+  { "tipo": "Tesouro Direto", "valor": 12000 },
+  { "tipo": "Previdência Privada", "valor": 10000 },
+  { "tipo": "Bolsa de Valores", "valor": 10000 }
+]

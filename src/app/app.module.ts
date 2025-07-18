@@ -38,8 +38,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import localePT from '@angular/common/locales/pt';
 import { OtherServicesComponent } from './dashboard/other-services/other-services.component';
-registerLocaleData(localePT);
+import { InvestmentsComponent } from './dashboard/investments/investments.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
+
+registerLocaleData(localePT);
 
 
 @NgModule({
@@ -59,11 +62,13 @@ registerLocaleData(localePT);
     FooterComponent,
     ContentComponent,
     OtherServicesComponent,
+    InvestmentsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    NgxChartsModule,
     MatSlideToggleModule,
     BrowserAnimationsModule,
     MatToolbarModule,
