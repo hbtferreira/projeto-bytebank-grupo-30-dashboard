@@ -32,6 +32,8 @@ import { FooterComponent } from './home/footer/footer.component';
 import { HeaderHomeComponent } from './home/header-home/header-home.component';
 import { HomeComponent } from './home/home.component';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
@@ -40,6 +42,7 @@ import localePT from '@angular/common/locales/pt';
 import { OtherServicesComponent } from './dashboard/other-services/other-services.component';
 import { InvestmentsComponent } from './dashboard/investments/investments.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { OpenAccountModalComponent } from './home/open-account-modal/open-account-modal.component';
 
 
 registerLocaleData(localePT);
@@ -52,6 +55,7 @@ registerLocaleData(localePT);
     HomeComponent,
     ExtractComponent,
     HeaderDashboardComponent,
+    OpenAccountModalComponent,
     BalanceComponent,
     MenuComponent,
     NewTransactionComponent,
@@ -63,6 +67,7 @@ registerLocaleData(localePT);
     ContentComponent,
     OtherServicesComponent,
     InvestmentsComponent,
+    OpenAccountModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +76,8 @@ registerLocaleData(localePT);
     NgxChartsModule,
     MatSlideToggleModule,
     BrowserAnimationsModule,
+    MatCheckboxModule,
+    MatDialogModule,
     MatToolbarModule,
     MatCardModule,
     MatIconModule,
