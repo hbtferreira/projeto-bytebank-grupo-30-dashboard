@@ -5,6 +5,7 @@
     <app-balance [nome]="customerName" />
     <app-new-transaction *ngIf="selectedMenu === 'Início'"/>
     <app-other-services *ngIf="selectedMenu === 'Outros Serviços'"/>
+    <app-investments *ngIf="selectedMenu === 'Investimentos'"/>
   </div>
   <app-extract />
 </div>
