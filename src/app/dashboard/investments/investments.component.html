@@ -1,0 +1,37 @@
+<div class="investments-container">
+
+  <h1 class="investments-title">Investimentos</h1>
+  
+  <div class="investments-grid">
+
+  <div class="total">Total: R$ {{ total | number:'1.0-0' }}.00</div>
+ 
+  <div class="cards-row">
+
+    <div class="card">
+      <div class="card__card-title">Renda Fixa</div>
+      <div class="card__card-value">R$ {{ rendaFixa | number:'1.0-0' }}.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card__card-title">Renda variável</div>
+      <div class="card__card-value">R$ {{ rendaVariavel | number:'1.0-0' }}.00</div>
+    </div>
+
+  </div>
+
+  <div class="stats-title">Estatísticas</div>
+  <div class="stats-row">
+    <ngx-charts-pie-chart
+      [results]="donutData"
+      [gradient]="true"
+      [view]="[500,500]"
+      [doughnut]="true"
+      [legend]="false"
+      [labels]="true"
+      [colorScheme]="{ domain: ['#2979FF', '#00BFAE', '#FF4081', '#FF9100'] }"
+      [animations]="true">
+    </ngx-charts-pie-chart>
+  </div>
+  </div>
+</div>

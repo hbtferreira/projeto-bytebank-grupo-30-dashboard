@@ -24,9 +24,10 @@
   <nav class="header__menu">
     <a
       *ngFor="let item of menuItems"
-      [href]="item.route"
+      [href]="item.label === 'Abrir minha conta' ? '#' : item.route"
       class="header__menu-item"
       [ngClass]="item.class"
+      (click)="openAccountClick(item, $event)"
     >
       {{ item.label }}
     </a>

@@ -8,8 +8,6 @@ Este projeto é parte da formação em Engenharia Front-End da FIAP + Alura, uti
 
 [Repositorio | release/1.0.0](https://github.com/brubribeiro/projeto-bytebank-grupo-30/tree/release/1.0.0)
 
----
-
 ## 🧰 Tecnologias Utilizadas
 
 - [Angular 17](https://angular.dev)
