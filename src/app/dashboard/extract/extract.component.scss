@@ -33,15 +33,35 @@
     
     .search-container {
       flex-grow: 1;
-      max-width: 300px;
+      max-width: 200px;
       margin-left: auto;
       
       .mat-mdc-form-field {
         width: 100%;
+        font-size: 12px;
+        
+        .mat-mdc-text-field-wrapper {
+          padding: 0 8px;
+        }
         
         .mat-mdc-form-field-infix {
-          padding-top: 8px;
-          padding-bottom: 8px;
+          padding: 6px 0;
+          min-height: 20px;
+          padding-right: 8px;
+        }
+        
+        .mat-mdc-form-field-suffix {
+          display: flex;
+          align-items: center;
+          margin-right: 8px;
+          
+          .mat-icon {
+            align-items: center;
+            font-size: 12px;
+            width: 12px;
+            height: 12px;
+            line-height: 1;
+          }
         }
         
         .mat-mdc-form-field-subscript-wrapper {
@@ -66,8 +86,8 @@
 
     mat-icon {
       font-size: 20px;
-      width: 32px;
-      height: 32px;
+      width: 20px;
+      height: 20px;
       display: flex;
       cursor: pointer;
       padding: $spacing-xs $spacing-xs;
