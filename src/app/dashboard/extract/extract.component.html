@@ -1,31 +1,31 @@
 <mat-card class="responsive-box extract-card">
   <div class="extract-header">
     <h2>Extrato</h2>
-    <!-- TODO: Revisar com professores, editar e deletar transacao bancaria faz sentido? -->
-    <!-- <div class="actions">
-      <button mat-icon-button aria-label="Editar">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button aria-label="Excluir">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div> -->
+    <div class="search-container">
+      <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label>Buscar</mat-label>
+        <input matInput placeholder="Buscar" [(ngModel)]="searchTerm" (input)="filterExtract()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
   </div>
 
-  <div *ngFor="let item of extrato" class="extract-item">
-    <div class="item-left">
-      <p class="month">{{ item.date | date : "MMMM" | titlecase }}</p>
-      <p class="type">{{ item.type }}</p>
-      <p
-        class="value"
-        [ngClass]="{ deposit: item.value > 0, withdraw: item.value < 0 }"
-      >
-        R$ {{ item.value | number: '1.2-2' }}
-      </p>
-      <mat-divider class="divider-line"></mat-divider>
-    </div>
-    <div class="item-right">
-      <p class="date">{{ item.date | date : "dd/MM/yyyy" }}</p>
+  <div class="extract-content">
+    <div *ngFor="let item of filteredExtrato" class="extract-item">
+      <div class="item-left">
+        <p class="month">{{ item.date | date : "MMMM" | titlecase }}</p>
+        <p class="type">{{ item.type }}</p>
+        <p
+          class="value"
+          [ngClass]="{ deposit: item.value > 0, withdraw: item.value < 0 }"
+        >
+          R$ {{ item.value | number: '1.2-2' }}
+        </p>
+        <mat-divider class="divider-line"></mat-divider>
+      </div>
+      <div class="item-right">
+        <p class="date">{{ item.date | date : "dd/MM/yyyy" }}</p>
+      </div>
     </div>
   </div>
 </mat-card>
