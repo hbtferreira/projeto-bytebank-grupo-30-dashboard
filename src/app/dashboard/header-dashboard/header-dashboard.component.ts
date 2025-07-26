@@ -1,14 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { AccountService } from '../../services/account.service';
 import { MenuItem } from '../../interfaces/menu-item.interface';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatMenuModule
+  ],
   templateUrl: './header-dashboard.component.html',
   styleUrl: './header-dashboard.component.scss',
 })
 export class HeaderDashboardComponent implements OnInit {
-  name = 'Joana da Silva';
+  @Input() name = 'Joana da Silva';
   isEditingName = false;
   temporaryName = '';
 

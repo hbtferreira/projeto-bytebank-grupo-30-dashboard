@@ -1,10 +1,27 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../models/transaction.model';
 import { TransactionType } from '../../enums/transaction-type.enum';
 
 @Component({
   selector: 'app-new-transaction',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
   templateUrl: './new-transaction.component.html',
   styleUrls: ['./new-transaction.component.scss'],
 })

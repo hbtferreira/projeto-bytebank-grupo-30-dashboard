@@ -1,5 +1,11 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
+// import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+// import { AppModule } from './app/app.module';
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+// platformBrowserDynamic().bootstrapModule(AppModule)
+//   .catch(err => console.error(err));
+import { initFederation } from '@angular-architects/native-federation';
+
+initFederation()
+  .catch(err => console.error(err))
+  .then(_ => import('./bootstrap'))
   .catch(err => console.error(err));

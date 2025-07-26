@@ -1,14 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-balance',
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './balance.component.html',
   styleUrl: './balance.component.scss',
 })
 export class BalanceComponent implements OnInit {
-  saldo = 0;
   @Input() nome = '';
+  saldo = 0;
   hoje = new Date();
   saldoVisivel = true;
 

@@ -1,8 +1,14 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MenuItem } from '../../interfaces/menu-item.interface';
 
 @Component({
   selector: 'app-menu',
+  standalone: true,
+  imports: [CommonModule, MatListModule, MatIconModule, MatButtonModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
