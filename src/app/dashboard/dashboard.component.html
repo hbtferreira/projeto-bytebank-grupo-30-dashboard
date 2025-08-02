@@ -4,6 +4,7 @@
   <div>
     <app-balance [nome]="customerName" />
     <app-new-transaction *ngIf="selectedMenu === 'Início'"/>
+    <app-my-cards *ngIf="selectedMenu === 'Meus Cartões'"/>
     <app-other-services *ngIf="selectedMenu === 'Outros Serviços'"/>
     <app-investments *ngIf="selectedMenu === 'Investimentos'"/>
   </div>

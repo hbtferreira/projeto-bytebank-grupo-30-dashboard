@@ -6,6 +6,7 @@ import { MenuComponent } from './menu/menu.component';
 import { BalanceComponent } from './balance/balance.component';
 import { ExtractComponent } from './extract/extract.component';
 import { NewTransactionComponent } from './new-transaction/new-transaction.component';
+import { MyCardsComponent } from './my-cards/my-cards.component';
 import { OtherServicesComponent } from './other-services/other-services.component';
 import { InvestmentsComponent } from './investments/investments.component';
 
@@ -19,6 +20,7 @@ import { InvestmentsComponent } from './investments/investments.component';
     BalanceComponent,
     ExtractComponent,
     NewTransactionComponent,
+    MyCardsComponent,
     OtherServicesComponent,
     InvestmentsComponent
   ],

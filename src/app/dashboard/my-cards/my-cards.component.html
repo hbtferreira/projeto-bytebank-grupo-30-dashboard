@@ -1,0 +1,18 @@
+<mat-card class="cards-container">
+  <div class="cards-container__content">
+    <h1 class="cards-container__title">Meus Cartões</h1>
+
+    <div class="cards-container__cards-grid">
+      <app-credit-card
+        *ngFor="let card of cards"
+        [card]="card"
+        (configure)="onConfigure($event)"
+        (block)="onBlock($event)"
+      ></app-credit-card>
+    </div>
+
+    <div class="cards-container__illustration">
+      <img src="assets/Ilustracao2.png" alt="Ilustração cartões de crédito" />
+    </div>
+  </div>
+</mat-card>
