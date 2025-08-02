@@ -18,6 +18,7 @@ export class MenuComponent {
   menuItems: MenuItem[] = [
     { label: 'Início', route: 'dashboard/#', active: true },
     { label: 'Transferências', route: 'dashboard/#', active: false },
+    { label: 'Meus Cartões', route: 'dashboard/#', active: false },
     { label: 'Investimentos', route: 'dashboard/#', active: false },
     { label: 'Outros Serviços', route: 'dashboard/#', active: false }
   ];

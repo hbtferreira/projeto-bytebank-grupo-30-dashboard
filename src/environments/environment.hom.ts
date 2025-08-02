@@ -1,11 +1,11 @@
 export const environment = {
-  production: true,
+  production: false,
   useLocalDb: false,
-  apiBaseUrl: 'http://localhost:3000',
+  apiBaseUrl: 'https://api-hom.bytebank.com',
   apiVersion: '/v1',
   apiNamespace: '/bytebank',
   shell: {
-    remoteEntry: 'https://shell.bytebank.com/remoteEntry.js',
+    remoteEntry: 'https://shell-hom.bytebank.com/remoteEntry.js',
     remoteName: 'shell-projeto-bytebank-gp-30'
   }
 };
