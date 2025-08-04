@@ -10,7 +10,6 @@ import { MyCardsComponent } from './my-cards/my-cards.component';
 import { OtherServicesComponent } from './other-services/other-services.component';
 import { InvestmentsComponent } from './investments/investments.component';
 import { SharedAuthServiceWrapper } from '../services/shared-auth-wrapper.service';
-import { environment as env } from '../../environments/environment';
 import { Card } from '../models/card.model';
 import { Account } from '../models/account.model';
 import { forkJoin, from } from 'rxjs';
@@ -42,7 +41,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private sharedAuthServiceWrapper: SharedAuthServiceWrapper,
+    public sharedAuthServiceWrapper: SharedAuthServiceWrapper,
   ) {}
 
   ngOnInit(): void {

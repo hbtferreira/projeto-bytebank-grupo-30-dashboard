@@ -16,7 +16,7 @@ export class AccountService extends BaseService<Account> {
   public transactionsUpdated$ = this.transactionsUpdated.asObservable();
 
   constructor(http: HttpClient) {
-    super(http, '');
+    super(http, 'account');
   }
 
   /**

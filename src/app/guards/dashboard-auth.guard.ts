@@ -7,7 +7,7 @@ import { SharedAuthServiceWrapper } from '../services/shared-auth-wrapper.servic
 })
 export class DashboardAuthGuard implements CanActivate {
   constructor(
-    private authWrapper: SharedAuthServiceWrapper,
+    public authWrapper: SharedAuthServiceWrapper,
     private router: Router
   ) {}
 

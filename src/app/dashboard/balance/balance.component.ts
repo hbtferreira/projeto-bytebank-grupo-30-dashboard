@@ -24,7 +24,7 @@ export class BalanceComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private sharedAuthServiceWrapper: SharedAuthServiceWrapper
+    public sharedAuthServiceWrapper: SharedAuthServiceWrapper
   ) {
     this.sharedAuthServiceWrapper.getCurrentUser().then(user => this.user = user || { id: '', username: '', email: '' });
   }
