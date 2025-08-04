@@ -7,7 +7,32 @@ import { switchMap, catchError } from 'rxjs/operators';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authWrapper = inject(SharedAuthServiceWrapper);
-  return from(authWrapper.getToken()).pipe(
+
+  // Função para obter token com fallback
+  const getTokenWithFallback = async (): Promise<string | null> => {
+    try {
+      // Tenta obter token através do authWrapper
+      if (authWrapper) {
+        const token = await authWrapper.getToken();
+        if (token) {
+          return token;
+        }
+      }
+    } catch (error) {
+      console.warn('Erro ao obter token via authWrapper, tentando localStorage:', error);
+    }
+
+    // Fallback: tenta recuperar do localStorage
+    try {
+      const token = localStorage.getItem('authToken');
+      return token;
+    } catch (localStorageError) {
+      console.error('Erro ao obter token do localStorage:', localStorageError);
+      return null;
+    }
+  };
+
+  return from(getTokenWithFallback()).pipe(
     switchMap(token => {
       if (token) {
         const authReq = req.clone({
@@ -18,7 +43,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       return next(req);
     }),
     catchError(error => {
-      console.error('Erro ao obter token:', error);
+      console.error('Erro no interceptor de autenticação:', error);
       return next(req);
     })
   );
