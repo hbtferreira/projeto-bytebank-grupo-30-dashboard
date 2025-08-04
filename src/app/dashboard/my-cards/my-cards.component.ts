@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Card } from '../../models/card.model';
-import { CardService } from '../../services/card.service';
 import { CreditCardComponent } from './credit-card/credit-card.component';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-my-cards',
@@ -17,33 +17,19 @@ import { CreditCardComponent } from './credit-card/credit-card.component';
   styleUrls: ['./my-cards.component.scss'],
 })
 export class MyCardsComponent implements OnInit {
-  cards: Card[] = [];
+  @Input() cards: Card[] = [];
 
-  constructor(private cardService: CardService) {}
+  constructor(private accountService: AccountService) {}
 
-  ngOnInit(): void {
-    this.cardService.cards$.subscribe({
-      next: (cards) => {
-        this.cards = cards;
-      },
-      error: (err) => console.error('Erro ao carregar cartões:', err)
-    });
-  }
+  ngOnInit(): void {}
 
   onConfigure(card: Card): void {
-    this.cardService.configureCard(card.id).subscribe({
-      next: () => console.log('Cartão configurado com sucesso'),
-      error: (err) => console.error('Erro ao configurar cartão:', err)
-    });
+    // Implementar lógica de configuração
+    console.log('Configurando cartão:', card.id);
   }
 
   onBlock(card: Card): void {
-    this.cardService.toggleCardBlock(card.id).subscribe({
-      next: () => {
-        const action = card.isBlocked ? 'desbloqueado' : 'bloqueado';
-        console.log(`Cartão ${action} com sucesso`);
-      },
-      error: (err) => console.error('Erro ao bloquear/desbloquear cartão:', err)
-    });
+    // Implementar lógica de bloqueio/desbloqueio
+    console.log(`${card.is_blocked ? 'Desbloqueando' : 'Bloqueando'} cartão:`, card.id);
   }
 }

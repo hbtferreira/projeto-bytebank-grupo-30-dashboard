@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { TransactionService } from '../../services/transaction.service';
+import { AccountService } from 'src/app/services/account.service';
+import { User } from 'src/app/models/user.model';
+import { SharedAuthServiceWrapper } from 'src/app/services/shared-auth-wrapper.service';
 
 @Component({
   selector: 'app-balance',
@@ -14,11 +16,18 @@ import { TransactionService } from '../../services/transaction.service';
 })
 export class BalanceComponent implements OnInit {
   @Input() nome = '';
+  @Input() accountId = '';
   saldo = 0;
   hoje = new Date();
   saldoVisivel = true;
+  user: User = { id: '', username: '', email: '' };
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(
+    private accountService: AccountService,
+    private sharedAuthServiceWrapper: SharedAuthServiceWrapper
+  ) {
+    this.sharedAuthServiceWrapper.getCurrentUser().then(user => this.user = user || { id: '', username: '', email: '' });
+  }
 
   get nomeCurto() {
     return this.nome.split(' ')[0];
@@ -27,15 +36,18 @@ export class BalanceComponent implements OnInit {
   ngOnInit(): void {
     this.loadBalance();
 
-    this.transactionService.transactionsUpdated$.subscribe(() => {
+    this.accountService.transactionsUpdated$.subscribe(() => {
       this.loadBalance();
     });
   }
 
   private loadBalance(): void {
-    this.transactionService.getBalance().subscribe({
-      next: (balance) => (this.saldo = balance),
-      error: (err) => console.error('Erro ao carregar saldo:', err),
+    this.accountService.getStatement(this.accountId).subscribe({
+      next: (response) => {
+        const transactions = response.result.transactions;
+        this.saldo = transactions.reduce((total: number, t: any) => total + t.value, 0);
+      },
+      error: (err: any) => console.error('Erro ao carregar saldo:', err),
     });
   }
 }

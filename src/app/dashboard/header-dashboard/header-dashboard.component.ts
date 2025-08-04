@@ -43,28 +43,28 @@ export class HeaderDashboardComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.accountService.loadAccount().subscribe({
-      next: (account) => {
-        this.name = account.customer.name;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar conta:', err);
-      },
-    });
-    this.temporaryName = this.name;
+    // this.accountService.loadAccount().subscribe({
+    //   next: (account) => {
+    //     this.name = account.customer.name;
+    //   },
+    //   error: (err) => {
+    //     console.error('Erro ao carregar conta:', err);
+    //   },
+    // });
+    // this.temporaryName = this.name;
   }
 
   updateCustomerName(newName: string): void {
-    if (newName && newName.trim() !== '') {
-      this.accountService.updateAccountName('1', newName.trim()).subscribe({
-        next: (account) => {
-          this.name = account.customer.name;
-          this.isEditingName = false;
-        },
-        error: (err) => {
-          console.error('Erro ao atualizar nome:', err);
-        },
-      });
-    }
+    // if (newName && newName.trim() !== '') {
+    //   this.accountService.updateAccountName('1', newName.trim()).subscribe({
+    //     next: (account) => {
+    //       this.name = account.customer.name;
+    //       this.isEditingName = false;
+    //     },
+    //     error: (err) => {
+    //       console.error('Erro ao atualizar nome:', err);
+    //     },
+    //   });
+    // }
   }
 }

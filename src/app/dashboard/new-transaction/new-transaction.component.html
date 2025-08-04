@@ -12,9 +12,30 @@
       <mat-form-field appearance="fill" class="transaction-card__field">
         <mat-label>Tipo de transação</mat-label>
         <mat-select [(value)]="transactionType">
-          <mat-option value="Depósito">Entrada</mat-option>
-          <mat-option value="Transferência">Saída</mat-option>
+          <mat-option value="DEPOSIT">Entrada</mat-option>
+          <mat-option value="TRANSFER">Saída</mat-option>
+          <mat-option value="PAYMENT">Pagamento</mat-option>
         </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="transaction-card__field">
+        <mat-label>De</mat-label>
+        <input
+          matInput
+          placeholder="Origem da transação"
+          [(ngModel)]="fromField"
+          type="text"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="transaction-card__field">
+        <mat-label>Para</mat-label>
+        <input
+          matInput
+          placeholder="Destino da transação"
+          [(ngModel)]="toField"
+          type="text"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="transaction-card__field">

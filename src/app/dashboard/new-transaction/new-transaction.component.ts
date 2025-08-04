@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,9 +6,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { TransactionService } from '../../services/transaction.service';
+import { AccountService } from '../../services/account.service';
 import { Transaction } from '../../models/transaction.model';
-import { TransactionType } from '../../enums/transaction-type.enum';
 
 @Component({
   selector: 'app-new-transaction',
@@ -26,33 +25,35 @@ import { TransactionType } from '../../enums/transaction-type.enum';
   styleUrls: ['./new-transaction.component.scss'],
 })
 export class NewTransactionComponent {
-  transactionType: TransactionType = TransactionType.DEPOSIT;
+  transactionType: string = 'DEPOSIT';
   amount: number = 0;
+  fromField: string = '';
+  toField: string = '';
+  @Input() accountId = '';
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(private accountService: AccountService) {}
 
   finishTransaction(): void {
-    const transaction: Omit<Transaction, 'type'> = {
-      id: Math.random().toString(36).substring(2, 15),
-      value: this.amount,
-      date: new Date(),
+    const transactionData = {
+      accountId: this.accountId,
+      type: this.transactionType,
+      value: this.transactionType === 'TRANSFER' ? -Math.abs(this.amount) : this.amount,
+      from: this.fromField || 'Conta Corrente',
+      to: this.toField || 'Destino',
     };
 
-    if (this.transactionType === TransactionType.DEPOSIT) {
-      this.transactionService.addMoney(transaction).subscribe({
-        next: () => console.log('Entrada realizada com sucesso'),
-        error: (err) => console.error('Erro ao realizar entrada:', err),
-      });
-    } else if (this.transactionType === TransactionType.TRANSFER) {
-      this.transactionService.removeMoney(transaction).subscribe({
-        next: () => console.log('Saída realizada com sucesso'),
-        error: (err) => console.error('Erro ao realizar saída:', err),
-      });
-    } else {
-      console.warn('Tipo de transação desconhecido');
-    }
+    this.accountService.createTransaction(transactionData).subscribe({
+      next: () => {
+        console.log('Transação realizada com sucesso');
+        this.accountService.updateTransactions();
+      },
+      error: (err: any) => console.error('Erro ao realizar transação:', err),
+    });
 
+    // Reset form
     this.amount = 0;
-    this.transactionType = TransactionType.DEPOSIT;
+    this.transactionType = 'DEPOSIT';
+    this.fromField = '';
+    this.toField = '';
   }
 }
