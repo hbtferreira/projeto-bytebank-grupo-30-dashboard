@@ -1,28 +1,60 @@
 @import "../../../styles/tokens";
 
 .header {
-  background: $color-primary;
-  color: $color-text-on-primary;
+  background: #1e4d5c;
+  color: #ffffff;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 96px;
+  padding: 0 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  padding: 0 5%;
+}
+
+.user-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+  gap: $spacing-xl;
+  position: relative;
 }
 
 .user-info {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex: 1 1 auto;
-  gap: $spacing-xl;
-  padding-right: 390px;
+  gap: 16px;
+  color: #ffffff;
 
   &__name {
-    font-size: $font-body-sm-size;
-    font-weight: $font-body-md-semi-weight;
-    font-family: $font-family-base;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #ffffff;
   }
 
   &__icon {
+    color: #d2691e;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border-radius: 50%;
+  }
+}
+
+.profile-menu-container {
+  position: relative;
+}
+
+.profile-menu-trigger {
+  padding: 0;
+  color: $color-text-on-primary;
+  
+  .profile-menu-icon {
     background: $color-background;
     color: $secondary-700;
     font-size: $font-heading-md-size;
@@ -30,6 +62,96 @@
     height: $font-heading-lg-size;
     border-radius: $border-radius-full;
     padding: $spacing-xxs;
+  }
+}
+
+.profile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #000000;
+  border-radius: $border-radius-md;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease-in-out;
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  &__header {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+  }
+
+  &__title {
+    color: #ffffff;
+    font-size: $font-body-sm-size;
+    font-weight: $font-body-md-semi-weight;
+  }
+
+  &__close {
+    color: $brand-500;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__content {
+    padding: $spacing-xs 0;
+  }
+
+  &__item {
+    position: relative;
+    padding: $spacing-sm $spacing-md;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #1a1a1a;
+    }
+
+    &--active {
+      .profile-menu__item-text {
+        color: $brand-500;
+      }
+    }
+  }
+
+  &__item-text {
+    color: #ffffff;
+    font-size: $font-body-sm-size;
+    font-weight: $font-body-md-weight;
+    display: block;
+  }
+
+  &__item-indicator {
+    position: absolute;
+    bottom: 0;
+    left: $spacing-md;
+    right: $spacing-md;
+    height: 2px;
+    background-color: $brand-500;
+  }
+
+  &__separator {
+    height: 1px;
+    background-color: #ffffff;
+    margin: $spacing-xs $spacing-md;
+    opacity: 0.3;
   }
 }
 
@@ -62,30 +184,53 @@ a {
   }
 }
 
-.edit-name-form {
-  display: inline-flex;
-  align-items: center;
+// Responsividade específica para tablet (720px)
+@media (max-width: 1024px) and (min-width: 721px) {
+  .header {
+    background: #1e4d5c;
+    height: 80px;
+    padding: 0 20px;
+    justify-content: flex-end;
+  }
 
-  &__input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    color: $color-text-on-primary;
-    border: none;
-    border-bottom: $color-text-on-primary 1px solid;
-    outline: none;
-    font-size: $font-body-sm-size;
-    font-weight: $font-body-md-semi-weight;
-    font-family: $font-family-base;
-    margin: -$spacing-xs auto;
-    padding: 0 $spacing-xs;
+  .user-info-container {
+    padding-right: 0;
+    gap: 20px;
+  }
+
+  .user-info {
+    gap: 12px;
+
+    &__name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    &__icon {
+      color: #d2691e;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .menu-button {
+    display: none;
   }
 }
 
 @media (max-width: 720px) {
-  .user-info {
+  .header {
+    background: $color-primary;
+    height: 96px;
+    justify-content: space-between;
+  }
+
+  .user-info-container {
     display: none;
   }
+  
   .menu-button {
     display: block;
   }
