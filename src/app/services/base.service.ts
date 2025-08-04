@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../interfaces/response.interface';
 
 @Injectable()
 export abstract class BaseService<T> {
-  protected baseUrl = environment.useLocalDb
-    ? `${environment.apiBaseUrl}`
-    : `${environment.apiBaseUrl}${environment.apiVersion}${environment.apiNamespace}`;
+  protected baseUrl = `${environment.apiBaseUrl}`;
 
   constructor(protected http: HttpClient, private entityPath: string) {}
 

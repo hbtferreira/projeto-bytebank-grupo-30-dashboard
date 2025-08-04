@@ -1,12 +1,15 @@
+import { Transaction } from './transaction.model';
+import { Card } from './card.model';
+
 export interface Account {
   id: string;
-  number: string;
-  balance: number;
-  customer: CustomerAccount;
+  type: string;
+  userId: string;
 }
 
-export interface CustomerAccount {
-  id: string;
-  name: string;
-  email: string;
+export interface GetAccountResponse {
+  account: Account[];
+  transactions: Transaction[];
+  cards: Card[];
 }
+

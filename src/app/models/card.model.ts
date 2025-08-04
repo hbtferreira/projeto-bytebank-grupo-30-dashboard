@@ -1,9 +1,12 @@
 export interface Card {
   id: string;
-  cardNumber: string;
-  cardHolder: string;
-  expiryDate: string;
-  brand: 'visa' | 'mastercard' | 'elo';
-  funcao: 'débito' | 'crédito';
-  isBlocked: boolean;
+  accountId: string;
+  type: string;
+  is_blocked: boolean;
+  number: number;
+  dueDate: string;
+  functions: string;
+  cvc: string;
+  paymentDate: string | null;
+  name: string;
 }
