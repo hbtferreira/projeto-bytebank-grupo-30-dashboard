@@ -19,6 +19,12 @@
 					"options": {},
 					"configurations": {
 						"production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
 							"target": "projeto-bytebank-grupo-30-dashboard:esbuild:production"
 						},
 						"development": {
