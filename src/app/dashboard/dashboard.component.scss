@@ -1,5 +1,23 @@
 @import "../../styles/tokens";
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+
+  .loading-spinner {
+    text-align: center;
+    padding: $spacing-lg;
+
+    p {
+      margin-top: $spacing-md;
+      color: $color-primary;
+      font-size: 1.1rem;
+    }
+  }
+}
+
 .dashboard {
   display: flex;
   flex-direction: row;
