@@ -18,7 +18,7 @@ export const environment = {
   apiVersion: '/v1',
   apiNamespace: '/bytebank',
   shell: {
-    remoteEntry: 'https://shell-projeto-bytebank-gp-30.vercel.app/remoteEntry.js',
+    remoteEntry: 'https://shell-projeto-bytebank-gp-30.vercel.app/remoteEntry.json',
     remoteName: 'shell-projeto-bytebank-gp-30'
   }
 };
