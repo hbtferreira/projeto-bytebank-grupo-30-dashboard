@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { loadRemoteModule } from '@angular-architects/native-federation';
-import { Observable, BehaviorSubject, fromEvent } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, fromEvent, of, from } from 'rxjs';
+import { filter, map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface AuthUser {
@@ -33,6 +33,8 @@ export class SharedAuthServiceWrapper {
   private sharedAuthService: any;
   private eventBus: any;
   private authStateSubject = new BehaviorSubject<AuthState | null>(null);
+  private initializationPromise: Promise<any> | null = null;
+  private isInitialized = false;
 
   public authState$ = this.authStateSubject.asObservable();
   public isAuthenticated$ = this.authState$.pipe(
@@ -41,6 +43,8 @@ export class SharedAuthServiceWrapper {
 
   constructor() {
     this.setupEventListeners();
+    // Iniciar o carregamento do módulo remoto imediatamente
+    this.initializationPromise = this.initializeRemoteModule();
   }
 
   private setupEventListeners(): void {
@@ -129,47 +133,83 @@ export class SharedAuthServiceWrapper {
     }
   }
 
-  async getSharedAuthService() {
-    if (!this.sharedAuthService) {
-      try {
-        const module = await loadRemoteModule({
-          remoteEntry: environment.shell.remoteEntry,
-          remoteName: environment.shell.remoteName,
-          exposedModule: './shared-auth'
-        });
-        this.sharedAuthService = new module.SharedAuthService();
-
-        // Sincronizar estado inicial
-        const currentState = this.sharedAuthService.getStateSnapshot();
-        this.authStateSubject.next(currentState);
-
-        // Subscrever para mudanças
-        this.sharedAuthService.auth$.subscribe((state: AuthState) => {
-          this.authStateSubject.next(state);
-        });
-
-      } catch (error) {
-        console.error('Erro ao carregar SharedAuthService:', error);
-        // Fallback para sincronização via storage
-        this.syncStateFromStorage();
-      }
+  private async initializeRemoteModule(): Promise<void> {
+    if (this.isInitialized) {
+      return;
     }
+
+    try {
+      const module = await loadRemoteModule({
+        remoteEntry: environment.shell.remoteEntry,
+        remoteName: environment.shell.remoteName,
+        exposedModule: './shared-auth'
+      });
+
+      // Verificar se a função factory existe
+      if (!module.createSharedAuthService) {
+        throw new Error('createSharedAuthService function not found in module');
+      }
+
+      // Usar função factory ao invés de new
+      this.sharedAuthService = module.createSharedAuthService();
+
+      // Verificar se o serviço foi criado corretamente
+      if (!this.sharedAuthService.auth$) {
+        throw new Error('SharedAuthService not properly initialized');
+      }
+
+      // Verificar se a função factory do EventBus existe
+      if (module.createMicrofrontendEventBus) {
+        this.eventBus = module.createMicrofrontendEventBus();
+      }
+
+      // Sincronizar estado inicial
+      const currentState = this.sharedAuthService.getStateSnapshot();
+      if (currentState) {
+        this.authStateSubject.next(currentState);
+      }
+
+      // Subscrever para mudanças
+      this.sharedAuthService.auth$.subscribe((state: AuthState) => {
+        this.authStateSubject.next(state);
+      });
+
+      this.isInitialized = true;
+      console.log('Módulo remoto inicializado com sucesso');
+
+    } catch (error) {
+      console.error('Erro ao inicializar módulo remoto:', error);
+      // Fallback para sincronização via storage
+      this.syncStateFromStorage();
+      this.isInitialized = false;
+    }
+  }
+
+  async getSharedAuthService() {
+    // Aguardar a inicialização do módulo remoto
+    if (this.initializationPromise) {
+      await this.initializationPromise;
+    }
+
+    if (!this.sharedAuthService && !this.isInitialized) {
+      // Tentar inicializar novamente se falhou na primeira vez
+      await this.initializeRemoteModule();
+    }
+
     return this.sharedAuthService;
   }
 
   async getEventBus() {
-    if (!this.eventBus) {
-      try {
-        const module = await loadRemoteModule({
-          remoteEntry: environment.shell.remoteEntry,
-          remoteName: environment.shell.remoteName,
-          exposedModule: './shared-auth'
-        });
-        this.eventBus = new module.MicrofrontendEventBus();
-      } catch (error) {
-        console.error('Erro ao carregar EventBus:', error);
-      }
+    // Aguardar a inicialização do módulo remoto
+    if (this.initializationPromise) {
+      await this.initializationPromise;
     }
+
+    if (!this.eventBus && !this.isInitialized) {
+      // Tentar inicializar novamente se falhou na primeira vez
+      await this.initializeRemoteModule();
+    }
+
     return this.eventBus;
   }
 
@@ -254,9 +294,40 @@ export class SharedAuthServiceWrapper {
   }
 
   async getAuthObservable(): Promise<Observable<AuthState | null>> {
-    // Inicializar sincronização se ainda não foi feita
-    await this.getSharedAuthService();
+    // Aguardar a inicialização do módulo remoto
+    await this.waitForInitialization();
     return this.authState$;
+  }
+
+  // Método público para aguardar a inicialização
+  async waitForInitialization(): Promise<void> {
+    if (this.initializationPromise) {
+      await this.initializationPromise;
+    }
+
+    if (!this.isInitialized) {
+      await this.initializeRemoteModule();
+    }
+  }
+
+  // Método para verificar se está inicializado
+  isModuleInitialized(): boolean {
+    return this.isInitialized;
+  }
+
+  // Método para uso com forkJoin - retorna um Observable que completa quando o módulo está carregado
+  getInitializationObservable(): Observable<boolean> {
+    if (this.isInitialized) {
+      return of(true);
+    }
+
+    return from(this.waitForInitialization()).pipe(
+      map(() => this.isInitialized),
+      catchError((error) => {
+        console.error('Erro na inicialização do módulo remoto:', error);
+        return of(false);
+      })
+    );
   }
 
   // Método para subscrever eventos específicos
