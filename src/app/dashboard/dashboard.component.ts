@@ -13,7 +13,7 @@ import { SharedAuthServiceWrapper } from '../services/shared-auth-wrapper.servic
 import { Card } from '../models/card.model';
 import { Account } from '../models/account.model';
 import { forkJoin, from } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, retry, switchMap, timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,6 +38,8 @@ export class DashboardComponent implements OnInit {
   cards: Card[] = [];
   account: Account | null = null;
   isLoading = true;
+  maxRetries = 3;
+  timeoutMs = 10000;
 
   constructor(
     private accountService: AccountService,
@@ -45,107 +47,39 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //this.initializeDashboard();
-    this.initializeDashboardWithIndividualErrorHandling();
+    this.initializeDashboard();
   }
 
   private initializeDashboard(): void {
-    this.isLoading = true;
+      this.isLoading = true;
 
-    // Usando forkJoin para executar as chamadas simultaneamente
-    forkJoin({
-      user: from(this.sharedAuthServiceWrapper.getCurrentUser()),
-      accountData: this.accountService.find()
-    }).pipe(
-      catchError(error => {
-        console.error('Erro ao carregar dados do dashboard:', error);
-
-        // Retorna dados padrão em caso de erro para manter a aplicação funcionando
-        return [{
-          user: null,
-          accountData: { message: '', result: { account: [], transactions: [], cards: [] } }
-        }];
-      }),
-      finalize(() => {
-        this.isLoading = false;
-      })
-    ).subscribe({
-      next: (data) => {
-        // Processar dados do usuário
-        if (data.user) {
-          this.customerName = data.user.username || 'Usuário';
-        } else {
-          console.warn('⚠️ Usuário não encontrado no Shared Auth Wrapper');
-          this.customerName = 'Usuário';
-        }
-
-        // Processar dados da conta
-        if (data.accountData?.result) {
-          this.account = data.accountData.result.account?.[0];
-          this.cards = data.accountData.result.cards || [];
-
-          console.log('✅ Dados carregados com sucesso:', {
-            user: data.user,
-            account: this.account,
-            cards: this.cards.length
+      from(this.sharedAuthServiceWrapper.getCurrentUser()).pipe(
+        timeout(this.timeoutMs),
+        retry(this.maxRetries),
+        switchMap(user => {
+          return forkJoin({
+            user: [user],
+            accountData: this.accountService.find()
           });
-        }
-      },
-      error: (error) => {
-        console.error('Erro crítico ao inicializar dashboard:', error);
-        this.customerName = 'Usuário';
-      }
-    });
-  }
-
-  // Método alternativo com tratamento individual de erros
-  private initializeDashboardWithIndividualErrorHandling(): void {
-    this.isLoading = true;
-
-    // Converter Promise para Observable
-    const userRequest$ = from(this.sharedAuthServiceWrapper.getCurrentUser()).pipe(
-      catchError(error => {
-        console.error('Erro ao carregar usuário:', error);
-        return [null]; // Retorna null em caso de erro
-      })
-    );
-
-    // Chamada para dados da conta já é Observable
-    const accountRequest$ = this.accountService.find().pipe(
-      catchError(error => {
-        console.error('Erro ao carregar conta:', error);
-        return [{ message: 'Erro', result: { account: [], transactions: [], cards: [] } }];
-      })
-    );
-
-    forkJoin({
-      user: userRequest$,
-      accountData: accountRequest$
-    }).pipe(
-      finalize(() => {
-        this.isLoading = false;
-      })
-    ).subscribe({
-      next: (data) => {
-        // Processar dados com tratamento individual
-        this.customerName = data.user?.username || 'Usuário';
-
-        if (data.accountData?.result) {
-          this.account = data.accountData.result.account?.[0];
-          this.cards = data.accountData.result.cards || [];
-        }
-
-        console.log('✅ Inicialização completa:', {
-          userLoaded: !!data.user,
-          accountLoaded: !!this.account,
-          cardsCount: this.cards.length
-        });
-      },
-      error: (error) => {
-        console.error('Erro na inicialização:', error);
-      }
-    });
-  }
+        }),
+        catchError(error => {
+          console.error('Erro no carregamento sequencial:', error);
+          return [{ user: null, accountData: null }];
+        }),
+      ).subscribe({
+        next: (data) => {
+          this.customerName = data.user?.username || 'Usuário';
+          if (data.accountData?.result) {
+            this.account = data.accountData.result.account?.[0];
+            this.cards = data.accountData.result.cards || [];
+          }
+        },
+        error: (error) => {
+          console.error('⚠️ Erro na inicialização:', error);
+        },
+        complete: () => this.isLoading = false
+      });
+    }
 
   onMenuSelected(label: string) {
     this.selectedMenu = label;
