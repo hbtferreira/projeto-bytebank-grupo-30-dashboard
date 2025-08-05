@@ -10,7 +10,7 @@
   <app-header-dashboard [name]="customerName" />
   <div class="dashboard">
     <app-menu (menuSelected)="onMenuSelected($event)"/>
-    <div>
+    <div class="dashboard__container">
       <app-balance [nome]="customerName" [accountId]="account?.id || ''" />
       <app-new-transaction *ngIf="selectedMenu === 'Início'" [accountId]="account?.id || ''"/>
       <app-my-cards *ngIf="selectedMenu === 'Meus Cartões'" [cards]="cards"/>

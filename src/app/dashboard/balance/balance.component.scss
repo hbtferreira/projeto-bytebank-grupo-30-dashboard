@@ -14,6 +14,10 @@
   margin: $spacing-md auto 0;
   position: relative;
 
+  @media screen and (max-width: 1210px) {
+    max-width: none;
+  }
+
   &__container {
     display: flex;
     flex-direction: row;

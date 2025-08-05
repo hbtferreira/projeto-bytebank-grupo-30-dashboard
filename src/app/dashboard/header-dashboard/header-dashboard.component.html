@@ -20,28 +20,46 @@
       </a>
     </ng-container>
   </mat-menu>
-  <div
-    class="user-info"
-    id="user-info"
-    (click)="temporaryName = name; isEditingName = true"
-  >
-    <ng-container *ngIf="!isEditingName; else editTemplate">
-      <span class="user-info__name">{{ name }}</span>
-      <mat-icon class="user-info__icon" fontIcon="person_outline"></mat-icon>
-    </ng-container>
+  
+  <div class="user-info-container">
 
-    <ng-template #editTemplate>
-      <form (submit)="updateCustomerName(temporaryName)" class="edit-name-form">
-        <input
-          type="text"
-          [(ngModel)]="temporaryName"
-          name="name"
-          class="edit-name-form__input"
-          (click)="$event.stopPropagation()"
-          (blur)="updateCustomerName(temporaryName)"
-        />
-        <mat-icon class="user-info__icon">edit</mat-icon>
-      </form>
-    </ng-template>
+    <div class="profile-menu-container">
+      <div class="user-info">
+        <span class="user-info__name">{{ name || 'Não identificado' }}</span>
+        <button
+          mat-icon-button
+          class="profile-menu-trigger"
+          (click)="toggleProfileMenu()"
+          aria-label="Menu perfil">
+          <mat-icon class="profile-menu-icon" fontIcon="person_outline"></mat-icon>
+        </button>
+      </div>
+
+      <div 
+        class="profile-menu" 
+        [class.profile-menu--open]="isProfileMenuOpen"
+        (click)="$event.stopPropagation()">
+        <div class="profile-menu__header">
+          <button 
+            mat-icon-button 
+            class="profile-menu__close"
+            (click)="closeProfileMenu()">
+            <mat-icon fontIcon="close"></mat-icon>
+          </button>
+        </div>
+        
+        <div class="profile-menu__content">
+          <div 
+            *ngFor="let item of profileMenuItems; let last = last" 
+            class="profile-menu__item"
+            [class.profile-menu__item--active]="item.action === 'account'"
+            (click)="handleProfileMenuAction(item.action)"
+          >
+            <span class="profile-menu__item-text">{{ item.label }}</span>
+            <div class="profile-menu__item-indicator" *ngIf="item.action === 'account'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </mat-toolbar>
