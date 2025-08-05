@@ -86,7 +86,9 @@ export class DashboardComponent implements OnInit {
   }
 
   onLogoutSelected(): void {
-    this.sharedAuthServiceWrapper.logout().catch((error) => {
+    this.sharedAuthServiceWrapper.logout().then(() => {
+      window.location.href = '/';
+    }).catch((error) => {
       console.warn('⚠️ Erro no logout via Shared Auth:', error);
     });
   }

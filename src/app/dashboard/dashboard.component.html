@@ -7,7 +7,7 @@
 
 <!-- Dashboard Content -->
 <div *ngIf="!isLoading">
-  <app-header-dashboard [name]="customerName" />
+  <app-header-dashboard [name]="customerName" (logout)="onLogoutSelected()"/>
   <div class="dashboard">
     <app-menu (menuSelected)="onMenuSelected($event)"/>
     <div class="dashboard__container">
