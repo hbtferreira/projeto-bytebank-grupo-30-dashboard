@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { TransactionService } from '../../services/transaction.service';
+import { AccountService } from '../../services/account.service';
 import { Transaction } from '../../models/transaction.model';
 
 @Component({
@@ -28,24 +28,25 @@ export class ExtractComponent implements OnInit {
   extrato: Transaction[] = [];
   filteredExtrato: Transaction[] = [];
   searchTerm: string = '';
+  @Input() accountId = '';
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.loadTransactions();
 
-    this.transactionService.transactionsUpdated$.subscribe(() => {
+    this.accountService.transactionsUpdated$.subscribe(() => {
       this.loadTransactions();
     });
   }
 
   private loadTransactions(): void {
-    this.transactionService.getByAccount().subscribe({
-      next: (data) => {
-        this.extrato = data;
+    this.accountService.getStatement(this.accountId).subscribe({
+      next: (response) => {
+        this.extrato = response.result.transactions;
         this.filteredExtrato = [...this.extrato];
       },
-      error: (err) => console.error('Erro ao carregar extrato:', err),
+      error: (err: any) => console.error('Erro ao carregar extrato:', err),
     });
   }
 
@@ -58,6 +59,8 @@ export class ExtractComponent implements OnInit {
     const searchLower = this.searchTerm.toLowerCase().trim();
     this.filteredExtrato = this.extrato.filter(item =>
       item.type.toLowerCase().includes(searchLower) ||
+      item.from.toLowerCase().includes(searchLower) ||
+      item.to.toLowerCase().includes(searchLower) ||
       item.value.toString().includes(searchLower) ||
       new Date(item.date).toLocaleDateString('pt-BR').includes(searchLower) ||
       new Date(item.date).toLocaleString('pt-BR', { month: 'long' }).toLowerCase().includes(searchLower)

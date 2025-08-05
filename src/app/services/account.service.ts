@@ -1,68 +1,103 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Account } from '../models/account.model';
+import { Account, GetAccountResponse } from '../models/account.model';
+import { Transaction } from '../models/transaction.model';
 import { BaseService } from './base.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ApiResponse } from '../interfaces/response.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService extends BaseService<Account> {
   private accountSubject = new BehaviorSubject<Account | null>(null);
   account$ = this.accountSubject.asObservable();
 
+  // Lógica movida do TransactionService
+  private transactionsUpdated = new Subject<void>();
+  public transactionsUpdated$ = this.transactionsUpdated.asObservable();
+
   constructor(http: HttpClient) {
-    super(http, 'accounts');
+    super(http, 'account');
   }
 
   /**
-   * Carrega a conta do usuário (mockada com id '1') e atualiza o BehaviorSubject.
-   *
-   * - Utiliza o método `findById` para buscar a conta.
-   * - O operador RxJS `tap` executa um efeito colateral ao emitir a conta para o `accountSubject`,
-   *   permitindo que outros assinantes recebam a atualização.
-   *
-   * @returns Observable<Account> que emite a conta carregada
+   * GET /account
+   * Busca a conta do usuário logado com transações e cartões
+   * Baseado no método find do AccountController
    */
-  loadAccount(): Observable<Account> {
-    return this.findById('1').pipe(
-      tap((account) => this.accountSubject.next(account))
+  find(): Observable<ApiResponse<GetAccountResponse>> {
+    return this.http.get<ApiResponse<GetAccountResponse>>(`${this.baseUrl}/account`);
+  }
+
+  /**
+   * DELETE /account/:id
+   * Deleta uma conta
+   * Baseado no método delete do AccountController
+   * Nota: Este endpoint existe no controller mas não está definido nas rotas
+   */
+  deleteAccount(accountId: string): Observable<ApiResponse<Account>> {
+    return this.http.delete<ApiResponse<Account>>(
+      `${this.baseUrl}/account/${accountId}`
     );
   }
 
   /**
-   * Retorna o snapshot (valor atual) da conta armazenada no BehaviorSubject.
-   *
-   * @returns Account | null - Conta atual ou null se não carregada
+   * GET /account/:accountId/statement
+   * Obtém extrato da conta
+   * Baseado no método getStatement do AccountController
    */
-  getAccountSnapshot(): Account | null {
-    return this.accountSubject.getValue();
+  getStatement(accountId: string): Observable<ApiResponse<{ transactions: Transaction[] }>> {
+    return this.http.get<ApiResponse<{ transactions: Transaction[] }>>(
+      `${this.baseUrl}/account/${accountId}/statement`
+    );
   }
 
   /**
-   * Atualiza o nome do titular da conta.
-   *
-   * - Recupera o snapshot atual da conta.
-   * - Realiza um PATCH na API para atualizar o nome do cliente.
-   * - O operador RxJS `tap` atualiza o BehaviorSubject com a conta modificada.
-   *
-   * @param id ID da conta a ser atualizada
-   * @param newName Novo nome do titular
-   * @returns Observable<Account> que emite a conta atualizada
+   * POST /account/transaction
+   * Cria uma nova transação
+   * Baseado no método createTransaction do AccountController
    */
-  updateAccountName(id: string, newName: string): Observable<Account> {
-    const currentAccount = this.getAccountSnapshot();
-    if (!currentAccount) {
-      throw new Error('No account loaded');
-    }
-    return this.patch(`${id}`, {
-      customer: {
-        id: currentAccount.customer.id,
-        name: newName,
-        email: currentAccount.customer.email,
-      },
-      id: currentAccount.id,
-      number: currentAccount.number,
-      balance: currentAccount.balance,
-    }).pipe(tap((updatedAccount) => this.accountSubject.next(updatedAccount)));
+  createTransaction(transactionData: {
+    accountId: string;
+    value: number;
+    type: string;
+    from: string;
+    to: string;
+    anexo?: string;
+  }): Observable<ApiResponse<Transaction>> {
+    return this.http.post<ApiResponse<Transaction>>(
+      `${this.baseUrl}/account/transaction`,
+      transactionData
+    );
+  }
+
+  /**
+   * DELETE /account/:accountId/transaction/:transactionId
+   * Deleta uma transação específica
+   * Baseado no método deleteTransactionById do AccountController
+   */
+  deleteTransaction(transactionId: string, accountId: string): Observable<ApiResponse<Transaction>> {
+    return this.http.delete<ApiResponse<Transaction>>(
+      `${this.baseUrl}/account/${accountId}/transaction/${transactionId}`
+    );
+  }
+
+  /**
+   * PUT /account/:accountId/transaction/:transactionId
+   * Atualiza uma transação específica
+   * Baseado no método updateTransactionById do AccountController
+   */
+  updateTransaction(transactionId: string, accountId: string, updateData: Partial<Transaction>): Observable<ApiResponse<Transaction>> {
+    return this.http.put<ApiResponse<Transaction>>(
+      `${this.baseUrl}/account/${accountId}/transaction/${transactionId}`,
+      updateData
+    );
+  }
+
+  /**
+   * Notifica outros componentes que as transações foram atualizadas
+   * Método movido do TransactionService
+   */
+  updateTransactions(): void {
+    this.transactionsUpdated.next();
   }
 }

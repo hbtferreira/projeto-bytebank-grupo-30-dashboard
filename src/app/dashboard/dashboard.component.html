@@ -1,12 +1,23 @@
-<app-header-dashboard [name]="customerName" />
-<div class="dashboard">
-  <app-menu (menuSelected)="onMenuSelected($event)"/>
-  <div class="dashboard__container">
-    <app-balance [nome]="customerName" />
-    <app-new-transaction *ngIf="selectedMenu === 'Início'"/>
-    <app-my-cards *ngIf="selectedMenu === 'Meus Cartões'"/>
-    <app-other-services *ngIf="selectedMenu === 'Outros Serviços'"/>
-    <app-investments *ngIf="selectedMenu === 'Investimentos'"/>
+<!-- Loading State -->
+<div *ngIf="isLoading" class="loading-container">
+  <div class="loading-spinner">
+    <p>Carregando dados do dashboard...</p>
   </div>
-  <app-extract />
 </div>
+
+<!-- Dashboard Content -->
+<div *ngIf="!isLoading">
+  <app-header-dashboard [name]="customerName" (logout)="onLogoutSelected()"/>
+  <div class="dashboard">
+    <app-menu (menuSelected)="onMenuSelected($event)"/>
+    <div class="dashboard__container">
+      <app-balance [nome]="customerName" [accountId]="account?.id || ''" />
+      <app-new-transaction *ngIf="selectedMenu === 'Início'" [accountId]="account?.id || ''"/>
+      <app-my-cards *ngIf="selectedMenu === 'Meus Cartões'" [cards]="cards"/>
+      <app-other-services *ngIf="selectedMenu === 'Outros Serviços'"/>
+      <app-investments *ngIf="selectedMenu === 'Investimentos'"/>
+    </div>
+    <app-extract [accountId]="account?.id || ''"/>
+  </div>
+</div>
+

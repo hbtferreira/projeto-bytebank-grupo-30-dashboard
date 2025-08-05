@@ -12,6 +12,11 @@ module.exports = withNativeFederation({
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
   },
 
+  sharedMappings: [
+    '@angular/common/locales/pt',
+    '@angular/common/locales/extra/pt'
+  ],
+
   skip: [
     'rxjs/ajax',
     'rxjs/fetch',

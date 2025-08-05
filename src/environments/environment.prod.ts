@@ -1,11 +1,8 @@
 export const environment = {
   production: true,
-  useLocalDb: false,
-  apiBaseUrl: 'https://bybank-back-end.onrender.com/',
-  apiVersion: '/v1',
-  apiNamespace: '/bytebank',
+  apiBaseUrl: 'https://bybank-back-end.onrender.com',
   shell: {
-    remoteEntry: 'https://shell.bytebank.com/remoteEntry.js',
+    remoteEntry: 'https://shell-projeto-bytebank-gp-30.vercel.app/remoteEntry.json',
     remoteName: 'shell-projeto-bytebank-gp-30'
   }
 };

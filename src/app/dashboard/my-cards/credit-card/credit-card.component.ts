@@ -13,19 +13,19 @@ import { Card } from '../../../models/card.model';
     MatIconModule
   ],
   template: `
-    <div class="card-item" [class.card-item--blocked]="card.isBlocked">
+    <div class="card-item" [class.card-item--blocked]="card.is_blocked">
       <div class="card-item__visual">
-        <div class="credit-card" [class.credit-card--debit]="card.funcao === 'débito'">
+        <div class="credit-card" [class.credit-card--debit]="card.functions === 'Debit'">
           <div class="credit-card__header">
             <span class="credit-card__brand">Byte</span>
           </div>
-          <div class="credit-card__function">Platinum</div>
-          <div class="credit-card__number">{{ card.cardNumber }}</div>
+          <div class="credit-card__function">{{ card.type }}</div>
+          <div class="credit-card__number">**** **** **** {{ card.number.toString().slice(-4) }}</div>
           <div class="credit-card__info">
-            <div class="credit-card__holder">{{ card.cardHolder }}</div>
-            <div class="credit-card__expiry">{{ card.expiryDate }}</div>
+            <div class="credit-card__holder">{{ card.name }}</div>
+            <div class="credit-card__expiry">{{ formatDate(card.dueDate) }}</div>
           </div>
-          <div *ngIf="card.isBlocked" class="credit-card__blocked-overlay">
+          <div *ngIf="card.is_blocked" class="credit-card__blocked-overlay">
             <mat-icon>block</mat-icon>
             <span>CARTÃO BLOQUEADO</span>
           </div>
@@ -37,7 +37,7 @@ import { Card } from '../../../models/card.model';
           mat-flat-button
           class="card-item__button card-item__button--configure"
           (click)="onConfigure()"
-          [disabled]="card.isBlocked"
+          [disabled]="card.is_blocked"
         >
           Configurar
         </button>
@@ -47,10 +47,10 @@ import { Card } from '../../../models/card.model';
           class="card-item__button card-item__button--block"
           (click)="onBlock()"
         >
-          {{ card.isBlocked ? 'Desbloquear' : 'Bloquear' }}
+          {{ card.is_blocked ? 'Desbloquear' : 'Bloquear' }}
         </button>
-        
-        <div class="card-item__function">{{ card.funcao | titlecase }}</div>
+
+        <div class="card-item__function">{{ card.functions | titlecase }}</div>
       </div>
     </div>
   `,
@@ -67,6 +67,14 @@ export class CreditCardComponent {
 
   onBlock(): void {
     this.block.emit(this.card);
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${month}/${year}`;
   }
 
   getCardBrandIcon(brand: string): string {

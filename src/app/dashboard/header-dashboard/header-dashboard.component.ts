@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, HostListener } from '@angular/core';
+import { Component, Input, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -24,6 +24,8 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class HeaderDashboardComponent implements OnInit {
   @Input() name = 'Joana da Silva Oliveira';
+  @Output() logout = new EventEmitter<void>();
+
   isProfileMenuOpen = false;
 
   constructor(private accountService: AccountService) {}
@@ -49,16 +51,7 @@ export class HeaderDashboardComponent implements OnInit {
     { label: 'Sair', action: 'logout', icon: 'logout' }
   ];
 
-  ngOnInit(): void {
-    this.accountService.loadAccount().subscribe({
-      next: (account) => {
-        this.name = account.customer.name;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar conta:', err);
-      },
-    });
-  }
+  ngOnInit(): void {}
 
   toggleProfileMenu(): void {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
@@ -79,8 +72,7 @@ export class HeaderDashboardComponent implements OnInit {
         // Implementar navegação para configurações
         break;
       case 'logout':
-        console.log('Fazer logout');
-        // Implementar logout
+        this.logout.emit();
         break;
     }
     this.closeProfileMenu();
