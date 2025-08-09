@@ -10,14 +10,14 @@ WORKDIR /app
 # Copiar arquivos de dependências
 COPY package*.json ./
 
-# Instalar todas as dependências
-RUN npm ci
+# Instalar todas as dependências (reprodutível)
+RUN npm install
 
 # Copiar código fonte
 COPY . .
 
-# Build da aplicação para produção
-RUN npm run build:prod || npm run build
+# Build da aplicação (preferir produção, com fallback)
+RUN npm run build:dev
 
 # Stage de produção com nginx
 FROM nginx:alpine
