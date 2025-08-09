@@ -28,8 +28,7 @@
 							"target": "projeto-bytebank-grupo-30-dashboard:esbuild:production"
 						},
 						"development": {
-							"target": "projeto-bytebank-grupo-30-dashboard:esbuild:development",
-							"dev": true
+							"target": "projeto-bytebank-grupo-30-dashboard:esbuild:development"
 						}
 					},
 					"defaultConfiguration": "production"
@@ -93,6 +92,12 @@
 					},
 					"configurations": {
 						"production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
 							"budgets": [
 								{
 									"type": "initial",
