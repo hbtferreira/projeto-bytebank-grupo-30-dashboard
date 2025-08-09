@@ -10,12 +10,14 @@ module.exports = withNativeFederation({
 
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+    // Impedir que secundários de @angular/common (ex.: locales) sejam externalizados,
+    // para que sejam empacotados neste remoto e não resolvidos via import map em runtime
+    '@angular/common': { singleton: true, strictVersion: true, requiredVersion: 'auto', includeSecondaries: false },
   },
 
-  sharedMappings: [
-    '@angular/common/locales/pt',
-    '@angular/common/locales/extra/pt'
-  ],
+  // Não compartilhe mapeamentos de locales para evitar erro de resolução em runtime
+  // Deixe vazio para que os locales sejam empacotados dentro do remoto
+  sharedMappings: [],
 
   skip: [
     'rxjs/ajax',

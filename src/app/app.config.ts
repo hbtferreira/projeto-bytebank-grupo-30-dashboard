@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
-    { provide: LOCALE_ID, useValue: 'pt-br' },
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
     ...APP_INITIALIZER_PROVIDERS
   ]
 };
